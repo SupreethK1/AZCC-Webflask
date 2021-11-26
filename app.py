@@ -1,3 +1,8 @@
+from flask import Flask
+app=Flask(__name__)
+
+@app.route("/")
+
 # Program make a simple calculator
 
 # This function adds two numbers
