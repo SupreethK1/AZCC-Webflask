@@ -1,43 +1,26 @@
-from flask import Flask
-app=Flask(__name__)
+app = Flask(__name__)
+app.config.from_object(__name__)
 
-@app.route("/")
-def calculator():
-    # Program make a simple calculator    
-    print("Select operation.")
-    print("1.Add")
-    print("2.Subtract")
-    print("3.Multiply")
-    print("4.Divide")
 
-    while True:
-        # take input from the user
-        choice = input("Enter choice(1/2/3/4): ")
+@app.route('/result', methods=['POST'])
+def result():
+    var_1 = request.form.get("var_1", type=int)
+    var_2 = request.form.get("var_2", type=int)
+    operation = request.form.get("operation")
+    if(operation == 'Addition'):
+        result = var_1 + var_2
+    elif(operation == 'Subtraction'):
+        result = var_1 - var_2
+    elif(operation == 'Multiplication'):
+        result = var_1 * var_2
+    elif(operation == 'Division'):
+        result = var_1 / var_2
+    else:
+        result = 'INVALID CHOICE'
+    entry = result
+    return render_template('result.html', entry=entry)
 
-        # check if choice is one of the four options
-        if choice in ('1', '2', '3', '4'):
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
-
-            if choice == '1':
-                print(num1, "+", num2, "=", num1 + num2)
-
-            elif choice == '2':
-                print(num1, "-", num2, "=", num1 - num2)
-
-            elif choice == '3':
-                print(num1, "*", num2, "=", num1 * num2)
-
-            elif choice == '4':
-                print(num1, "/", num2, "=", num1 / num2)
-        
-            # check if user wants another calculation
-            # break the while loop if answer is no
-            next_calculation = input("Let's do next calculation? (yes/no): ")
-            if next_calculation == "no":
-            break
-    
-        else:
-            print("Invalid Input")
+if __name__ == '__main__':
+    app.run(debug=True)
 
     
